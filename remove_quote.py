@@ -18,7 +18,11 @@ def main():
 
     quote = sys.argv[1]
     if (quote.isnumeric() == True):
+        if (int(quote) >= len(jsonObject)):
+            print("I'm sorry that quote does not exist")
+            return
         quote = jsonObject[int(quote) - 1]
+
 
     if quote not in jsonObject:
         print("\""+quote+"\"", "does not exist")
