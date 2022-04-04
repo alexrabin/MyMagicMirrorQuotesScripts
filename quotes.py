@@ -61,9 +61,7 @@ def showOptions():
 
 
 def getQuotes():
-    quotesFile = open("/home/pi/MagicMirror/modules/MMM-CloneWarsQuotes/MMM-MotivationQuotes.json", "r");
-    jsonObject = json.load(quotesFile)
-    quotesFile.close()
+    jsonObject = getRawQuotes()
     return json.dumps(jsonObject, indent=2)
 
 def getRawQuotes():
