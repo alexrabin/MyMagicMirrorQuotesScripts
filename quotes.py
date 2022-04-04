@@ -66,9 +66,5 @@ def getRawQuotes():
     quotesFile.close()
     return jsonObject
 
-def writeQuotes(quotes):
-    quotesFile = open("/home/pi/MagicMirror/modules/MMM-CloneWarsQuotes/MMM-MotivationQuotes.json", "w")
-    json.dump(jsonObject, quotesFile)
-    quotesFile.close()
 
 main()
