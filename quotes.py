@@ -1,9 +1,10 @@
 import sys
 import json
 from word2number import w2n
+import quotes_controller as q
 
 def main():
-
+    quoteController = q.QuotesController()
     option = getOption()
     done = False
     while (done != True):
@@ -25,7 +26,7 @@ def main():
             script_descriptor.close()
             option = getOption()
         elif option == 3:
-            quotes = getRawQuotes()
+            quotes = quoteController.getQuotes()
             for i in range(len(quotes)):
                 print(f"{i + 1}.)", quotes[i])
 
@@ -59,12 +60,6 @@ def showOptions():
     print("3. Show All Quotes")
     print("4. Exit\n")
 
-
-def getRawQuotes():
-    quotesFile = open("/home/pi/MagicMirror/modules/MMM-CloneWarsQuotes/MMM-MotivationQuotes.json", "r");
-    jsonObject = json.load(quotesFile)
-    quotesFile.close()
-    return jsonObject
 
 
 main()

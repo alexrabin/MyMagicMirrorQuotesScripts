@@ -2,32 +2,24 @@
 
 import sys
 import json
+import quotes_controller as q
 
 def main():
-	if (len(sys.argv) < 2):
-		print("Must have a quote as a parameter")
-		return
-	if (len(sys.argv) > 2):
-		print("This program only allows one quote at a time")
-		return
+    quotesController = q.QuotesController()
 
-	quotesFile = open("/home/pi/MagicMirror/modules/MMM-CloneWarsQuotes/MMM-MotivationQuotes.json", "r");
-	jsonObject = json.load(quotesFile)
-	quotesFile.close()
+    if (len(sys.argv) < 2):
+        print("Must have a quote as a parameter")
+        return
+    if (len(sys.argv) > 2):
+        print("This program only allows one quote at a time")
+        return
 
-	newQuote = sys.argv[1]
-	if newQuote in jsonObject:
-		print("\""+newQuote+"\"", "already exists")
-		return
-
-	jsonObject.append(newQuote)
-
-	quotesFile = open("/home/pi/MagicMirror/modules/MMM-CloneWarsQuotes/MMM-MotivationQuotes.json", "w")
-
-	json.dump(jsonObject, quotesFile, indent=2)
-
-	quotesFile.close()
-
-	print("Added Quote:","\""+newQuote+"\"")
+    newQuote = sys.argv[1]
+    if quotesController.addQuote(newQuote):
+        print("Added Quote:","\""+newQuote+"\"")
+        return
+    else:
+        print("\""+newQuote+"\"", "already exists")
+        return	
 
 main()
