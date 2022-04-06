@@ -38,11 +38,13 @@ addButton.text_color = "white"
 def editQuoteAction():
     response = question("Edit Quote", None, initial_value=currentQuote.value[:len(currentQuote.value)-1])
     if (response is not None):
-
         if (quotesController.editQuote(currentQuoteIndex, response)):
             listBox.clear()
             for q in getQuotes():
                 listBox.append(q)
+            currentQuote.enable()
+            currentQuote.value = response
+            currentQuote.disable()
             info("Success", "Succesfully edited quote\n\n" + response)
 
         else:
@@ -74,7 +76,8 @@ def quoteSelected(option):
     currentQuote.enable()
 
     qComps = option.split(".) ")
-    currentQuoteIndex = int(qComps[0])
+    global currentQuoteIndex
+    currentQuoteIndex = int(qComps[0]) - 1
     q = qComps[1]
     currentQuote.value = q
     if (currentQuoteBox.visible == False):
