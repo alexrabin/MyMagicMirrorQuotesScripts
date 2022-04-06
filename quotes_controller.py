@@ -21,10 +21,13 @@ class QuotesController:
         return True
 
     def editQuote(self, index, newQuote):
-        if (int(index) > newQuote.length):
+        if (int(index) > len(self._quotes)):
             return False
 
         self._quotes[index] = newQuote;
+        self.updateQuotesFile(self._quotes)
+        return True
+
     def removeQuote(self, quoteToRemove):
         if (quoteToRemove.isnumeric() == True):
             return False

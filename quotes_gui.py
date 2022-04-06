@@ -19,15 +19,16 @@ app = App(title="Quotes")
 currentQuoteBox = Box(app, width="fill", height=120, visible=False)
 currentQuote = None
 listBox = None
-
+currentQuoteIndex = 0
 def addQuote():
     response = question("Add Quote", None);
     if (response is not None):
         if (quotesController.addQuote(response)):
-            info("Success", "Succesfully add quote\n\n" + response)
             listBox.clear()
             for q in getQuotes():
                 listBox.append(q)
+            info("Success", "Succesfully added quote\n\n" + response)
+
         else:
             error("Error", "Failed to save quote")
 
@@ -35,14 +36,17 @@ addButton = PushButton(app, text="New Quote", command=addQuote)
 addButton.bg = "green"
 addButton.text_color = "white"
 def editQuoteAction():
-    print(currentQuote.value)
     response = question("Edit Quote", None, initial_value=currentQuote.value[:len(currentQuote.value)-1])
     if (response is not None):
 
-        quotesController.addQuote(response)
-        listBox.clear()
-        for q in getQuotes():
-            listBox.append(q)
+        if (quotesController.editQuote(currentQuoteIndex, response)):
+            listBox.clear()
+            for q in getQuotes():
+                listBox.append(q)
+            info("Success", "Succesfully edited quote\n\n" + response)
+
+        else:
+            error("Error", "Failed to save quote")
 
 
 def deleteQuoteAction():
@@ -50,8 +54,12 @@ def deleteQuoteAction():
     response = yesno("Delete?", "Are you sure you want to delete this quote?\n\n'" + v + "'")
     if (response == True):
         if (quotesController.removeQuote(v)):
-            info("Success", "Succesfully removed quote\n\n" + v)
+            listBox.clear()
+            for q in getQuotes():
+                listBox.append(q)
             currentQuoteBox.hide()
+            info("Success", "Succesfully removed quote\n\n" + v)
+
 
 
 buttonGroup = Box(currentQuoteBox, layout="grid", height=50, width=120)
@@ -64,7 +72,10 @@ currentQuote = TextBox(currentQuoteBox, width="fill", height=70, multiline=True)
 
 def quoteSelected(option):
     currentQuote.enable()
-    q = option.split(") ")[1]
+
+    qComps = option.split(".) ")
+    currentQuoteIndex = int(qComps[0])
+    q = qComps[1]
     currentQuote.value = q
     if (currentQuoteBox.visible == False):
         currentQuoteBox.show()
